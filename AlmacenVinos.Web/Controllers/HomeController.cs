@@ -156,6 +156,7 @@ namespace AlmacenVinos.Web.Controllers
             List<BotellaDto> botellas = new List<BotellaDto>();
             using (var client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromMinutes(4);
                 client.BaseAddress = new Uri(urlApi);
                 var responseTask = client.GetAsync("Botella");
                 responseTask.Wait();
