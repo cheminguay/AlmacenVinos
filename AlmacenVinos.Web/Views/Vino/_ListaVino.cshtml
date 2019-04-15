@@ -1,0 +1,22 @@
+﻿@using AlmacenVinos.Domain.Models
+@using AlmacenVinos.Domain.Enums;
+@using GridMvc.Html;
+@model IEnumerable<VinoDto>
+
+@Html.Grid(Model).Named("VinosGrid").Columns(columns =>
+        {
+            columns.Add(c => c.Nombre).Titled("Nombre");
+            columns.Add(c => c.Denominacion).Titled("Denominación");
+            columns.Add(c => c.Variedad).Titled("Variedad");
+            columns.Add(c => c.Crianza).Titled("Crianza");
+            columns.Add(c => c.Color).Titled("Color");
+            columns.Add(c => c.Capacidad).Titled("Capacidad");
+            columns.Add().Encoded(false)
+                .Sanitized(false)
+                .SetWidth(25)
+                .RenderValueAs(o => @<button type="button" class="btn btn-primary clicable" onclick="baja('@o.Id');">Baja</button>);
+                }).EmptyText(StringEnum.GetStringValue(MensajeError.NoRegistros)).WithPaging(5).Sortable().Filterable().WithMultipleFilters().SetLanguage("es");
+
+<script>
+    $(".grid-mvc").gridmvc();
+</script>

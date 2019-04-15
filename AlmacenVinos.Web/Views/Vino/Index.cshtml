@@ -1,0 +1,97 @@
+﻿@using AlmacenVinos.Domain.Models
+@model VinoDto
+@{
+    ViewBag.Title = "Vinos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div><h2>Vinos</h2></div>
+
+<div id="listavinos"></div>
+
+<hr />
+<button type="button" class="btn btn-primary clicable" onclick="agregarVino();">Añadir</button>
+
+<div id="nuevo" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="padding-bottom: 25px">
+                <div class="col-sm-11"><h4 class="modal-title">Añadir Vino</h4></div>
+                <div class="col-sm-1">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            @using (Html.BeginForm("Agregar", "Vino", FormMethod.Post, new { @id = "agregarForm", @name = "agregarForm" }))
+            {
+
+                <div class="modal-body" style="min-height: 220px">
+
+                    <div class="col-sm-4">
+                        Nombre :
+                    </div> <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        Denominación :
+                    </div> <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Denominacion, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        Variedad :
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Variedad, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        Crianza :
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Crianza, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        Color :
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Color, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        Capacidad :
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Capacidad, new { @class = "form-control", })
+                    </div>
+                    <div>
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Añadir</button>
+                    <button type="button" class="btn btn-secondary" onclick="recarga()" data-dismiss="modal">Cancelar</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#cargando").modal("show");
+        vistaParcial('GET', '@Url.Action("ListaVinos", "Vino")' + getQueryString(), '#listavinos', '');
+        if ('@ViewBag.ModalAgregar' == 'True') {
+            $("#nuevo").modal("show");
+        }
+    });
+    function agregarVino() {
+        $("#nuevo").modal("show");
+    }
+    function baja(id) {
+        window.location.href = '@Url.Action("Borrar", "Vino")' + '/' + id;
+    }
+    function recarga() {
+        window.location.href = '@Url.Action("Index", "Vino")';
+    }
+
+</script>
+

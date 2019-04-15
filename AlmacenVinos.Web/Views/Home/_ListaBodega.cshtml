@@ -1,0 +1,30 @@
+﻿@using AlmacenVinos.Domain.Enums;
+@using AlmacenVinos.Domain.Models;
+@using GridMvc.Html;
+@model IEnumerable<BodegaDto>
+
+@Html.Grid(Model).Named("BodegaGrid").Columns(columns =>
+{
+columns.Add(c => c.Unidades).Titled("Unidades");
+columns.Add(c => c.Botella.Descripcion).Titled("Descripción");
+columns.Add(c => c.Botella.Vino.Nombre).Titled("Nombre");
+columns.Add(c => c.Botella.Vino.Denominacion).Titled("Denominación");
+columns.Add(c => c.Botella.Vino.Variedad).Titled("Variedad");
+columns.Add(c => c.Botella.Vino.Crianza).Titled("Crianza");
+columns.Add(c => c.Botella.Vino.Color).Titled("Color");
+columns.Add(c => c.Botella.Vino.Capacidad).Titled("Capacidad");
+columns.Add(c => c.Botella.Añada).Titled("Añada");
+columns.Add(c => c.Botella.Caducidad).Format("{0:dd/MM/yyyy}").Titled("Caducidad");
+columns.Add().Encoded(false)
+    .Sanitized(false)
+    .SetWidth(10)
+    .RenderValueAs(o => @<button type="button" class="btn btn-secondary clicable" onclick="sumar('@o.Id');">+</button>);
+columns.Add().Encoded(false)
+        .Sanitized(false)
+        .SetWidth(10)
+        .RenderValueAs(o => @<button type="button" class="btn btn-secondary clicable" onclick="restar('@o.Id');">-</button>);
+        }).EmptyText(StringEnum.GetStringValue(MensajeError.NoRegistros)).WithPaging(5).Sortable().Filterable().SetLanguage("es");
+
+<script>
+    $(".grid-mvc").gridmvc();
+</script>

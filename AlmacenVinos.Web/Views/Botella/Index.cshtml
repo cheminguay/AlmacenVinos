@@ -1,0 +1,92 @@
+﻿@using AlmacenVinos.Web.ViewModels
+@model BotellaViewModel
+@{
+    ViewBag.Title = "Botellas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div><h2>Botellas</h2></div>
+
+<div id="listabotellas"></div>
+<hr />
+<button type="button" class="btn btn-primary clicable" onclick="agregarBotella();">Añadir</button>
+
+<div id="nuevo" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm("Agregar", "Botella", FormMethod.Post, new { @id = "agregarForm", @name = "agregarForm" }))
+            {
+                <div class="modal-header" style="padding-bottom: 25px">
+                    <div class="col-sm-11"><h4 class="modal-title">Añadir Botella</h4></div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="modal-body" style="min-height: 220px">
+
+                    <div class="col-sm-4">
+                        Descripción :
+                    </div> <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Botella.Descripcion, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        Añada :
+                    </div> <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Botella.Añada, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        Caducidad :
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Botella.Caducidad, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        Vino :
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.HiddenFor(m => m.Botella.Disponible, new { @class = "DispVino" })
+                        @Html.HiddenFor(m => m.Botella.IdVino, new { @class = "SelectedVino" })
+                        @Html.DropDownListFor(m => m.Vinos, new SelectList(Model.Vinos, "Id", "Nombre"), new { @id = "VinoSelect", @class = "form-control" })
+                    </div>
+                    <div>
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Añadir</button>
+                    <button type="button" class="btn btn-secondary" onclick="recarga()" data-dismiss="modal">Cancelar</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#VinoSelect').on('change', function () {
+        $('.SelectedVino').val($('#VinoSelect :selected').val());
+    });
+    $(document).ready(function () {
+        $("#cargando").modal("show");
+        vistaParcial('GET', '@Url.Action("ListaBotellas", "Botella")' + getQueryString(), '#listabotellas', '');
+        if ('@ViewBag.ModalAgregar' == 'True') {
+            $("#nuevo").modal("show");
+        }
+        $('.SelectedVino').val($('#VinoSelect :selected').val());
+        $('.DispVino').val(true);
+    });
+    function agregarBotella() {
+        $("#nuevo").modal("show");
+    }
+    function baja(id) {
+        window.location.href = '@Url.Action("Borrar", "Botella")' + '/' + id;
+    }
+    function recarga() {
+        window.location.href = '@Url.Action("Index", "Botella")';
+    }
+    
+</script>

@@ -1,0 +1,84 @@
+﻿@using AlmacenVinos.Web.ViewModels
+@model BodegaViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Bodega";
+}
+
+<div><h2>Bodega</h2></div>
+
+<div id="listabodega"></div>
+<hr />
+<button type="button" class="btn btn-primary clicable" onclick="agregarBodega();">Añadir</button>
+
+<div id="nuevo" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @using (Html.BeginForm("Agregar", "Home", FormMethod.Post, new { @id = "agregarForm", @name = "agregarForm" }))
+            {
+                <div class="modal-header" style="padding-bottom: 25px">
+                    <div class="col-sm-11"><h4 class="modal-title">Añadir a Bodega</h4></div>
+                    <div class="col-sm-1">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="modal-body" style="min-height: 220px">
+
+                    <div class="col-sm-4">
+                        Unidades :
+                    </div> <div class="col-sm-8">
+                        @Html.TextBoxFor(m => m.Bodega.Unidades, new { @class = "form-control" })
+                    </div>
+                    <div class="col-sm-4">
+                        Vino :
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.HiddenFor(m => m.Bodega.NotificadoCaducidad, new { @class = "NotifCaduc" })
+                        @Html.HiddenFor(m => m.Bodega.IdBotella, new { @class = "SelectedBotella" })
+                        @Html.DropDownListFor(m => m.Botellas, new SelectList(Model.Botellas, "Id", "Descripcion"), new { @id = "BotellaSelect", @class = "form-control" })
+                    </div>
+                    <div>
+                        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Añadir</button>
+                    <button type="button" class="btn btn-secondary" onclick="recarga()" data-dismiss="modal">Cancelar</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+<script>
+    $('#BotellaSelect').on('change', function () {
+        $('.SelectedBotella').val($('#BotellaSelect :selected').val());
+    });
+    $(document).ready(function () {
+        $("#cargando").modal("show");
+        vistaParcial('GET', '@Url.Action("ListaBodega", "Home")' + getQueryString(), '#listabodega', '');
+        if ('@ViewBag.ModalAgregar' == 'True') {
+            $("#nuevo").modal("show");
+        }
+        $('.SelectedBotella').val($('#BotellaSelect :selected').val());
+        $('.NotifCaduc').val(false);
+    });
+    function agregarBodega() {
+        $("#nuevo").modal("show");
+    }
+    function sumar(id) {
+        $("#cargando").modal("show");
+        window.location.href = '@Url.Action("Suma", "Home")' + '?idBotella=' + id;
+    }
+    function restar(id) {
+        $("#cargando").modal("show");
+        window.location.href = '@Url.Action("Resta", "Home")' + '?idBotella=' + id;
+    }
+    function recarga() {
+        window.location.href = '@Url.Action("Index", "Home")';
+    }
+</script>

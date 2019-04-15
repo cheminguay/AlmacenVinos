@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Gestión Bodega</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/modernizr-2.6.2.js")"></script>
+
+    <style>
+        .bd-example-modal-lg .modal-dialog {
+            display: table;
+            position: absolute;
+            margin: 0 auto;
+            top: calc(50% - 24px);
+        }
+
+            .bd-example-modal-lg .modal-dialog .modal-content {
+                background-color: transparent;
+                border: none;
+            }
+
+        .clicable {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Bodega", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Botella", "Index", "Botella", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Vinos", "Index", "Vino", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+            </div>
+        </div>
+    </div>
+    <div id="cargando" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content" style="width: 48px">
+                <span class="fa fa-spinner fa-spin fa-3x"></span>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p></p>
+        </footer>
+    </div>
+
+</body>
+</html>
+
+<script src="@Url.Content("~/Scripts/gridmvc.min.js")" type="text/javascript"></script>
+<script src="~/Scripts/gridmvc.lang.es.js"></script>
+
+<script>
+    function getQueryString() {
+        if ((i = window.location.href.indexOf('?')) >= 0) {
+            const queryString = window.location.href.substring(i + 1);
+            if (queryString) {
+                return '?' + queryString;
+            }
+        }
+        return '';
+    }
+    function vistaParcial(metodo, url, div, data) {
+        $.ajax({
+            method: metodo,
+            url: url,
+            data: '',
+        })
+            .done(function (data) {
+                $(div).html(data);
+                $("#cargando").modal("hide");
+            })
+            .fail(function (jqXHR, textStatus, err) {
+                $("#cargando").modal("hide");
+                alert("Error: status = " + xhr.status + " Descripcion =" + xhr.responseText);
+            });
+    }
+</script>

@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BodegaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bodega">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NotificadoCaducidad" Type="bit" Nullable="false" />
+          <Property Name="IdBotella" Type="int" Nullable="false" />
+          <Property Name="Unidades" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Botella">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Caducidad" Type="datetime" />
+          <Property Name="Añada" Type="int" />
+          <Property Name="Disponible" Type="bit" Nullable="false" />
+          <Property Name="IdVino" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vino">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Denominacion" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Capacidad" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="Variedad" Type="varchar" MaxLength="50" />
+          <Property Name="Crianza" Type="varchar" MaxLength="50" />
+          <Property Name="Color" Type="varchar" MaxLength="50" />
+          <Property Name="Baja" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Bodega_Botella">
+          <End Role="Botella" Type="Self.Botella" Multiplicity="1" />
+          <End Role="Bodega" Type="Self.Bodega" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Botella">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bodega">
+              <PropertyRef Name="IdBotella" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Botella_Vino">
+          <End Role="Vino" Type="Self.Vino" Multiplicity="1" />
+          <End Role="Botella" Type="Self.Botella" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vino">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Botella">
+              <PropertyRef Name="IdVino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BodegaModelStoreContainer">
+          <EntitySet Name="Bodega" EntityType="Self.Bodega" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Botella" EntityType="Self.Botella" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vino" EntityType="Self.Vino" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bodega_Botella" Association="Self.FK_Bodega_Botella">
+            <End Role="Botella" EntitySet="Botella" />
+            <End Role="Bodega" EntitySet="Bodega" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Botella_Vino" Association="Self.FK_Botella_Vino">
+            <End Role="Vino" EntitySet="Vino" />
+            <End Role="Botella" EntitySet="Botella" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BodegaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bodega">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NotificadoCaducidad" Type="Boolean" Nullable="false" />
+          <Property Name="IdBotella" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Botella" Relationship="Self.FK_Bodega_Botella" FromRole="Bodega" ToRole="Botella" />
+          <Property Name="Unidades" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Botella">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Caducidad" Type="DateTime" Precision="3" />
+          <Property Name="Añada" Type="Int32" />
+          <Property Name="IdVino" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bodegas" Relationship="Self.FK_Bodega_Botella" FromRole="Botella" ToRole="Bodega" />
+          <NavigationProperty Name="Vino" Relationship="Self.FK_Botella_Vino" FromRole="Botella" ToRole="Vino" />
+          <Property Name="Descripcion" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Disponible" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vino">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Denominacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Capacidad" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="Variedad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Crianza" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Botellas" Relationship="Self.FK_Botella_Vino" FromRole="Vino" ToRole="Botella" />
+          <Property Name="Baja" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Bodega_Botella">
+          <End Role="Botella" Type="Self.Botella" Multiplicity="1" />
+          <End Role="Bodega" Type="Self.Bodega" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Botella">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bodega">
+              <PropertyRef Name="IdBotella" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Botella_Vino">
+          <End Role="Vino" Type="Self.Vino" Multiplicity="1" />
+          <End Role="Botella" Type="Self.Botella" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vino">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Botella">
+              <PropertyRef Name="IdVino" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BodegaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bodegas" EntityType="Self.Bodega" />
+          <EntitySet Name="Botellas" EntityType="Self.Botella" />
+          <EntitySet Name="Vinoes" EntityType="Self.Vino" />
+          <AssociationSet Name="FK_Bodega_Botella" Association="Self.FK_Bodega_Botella">
+            <End Role="Botella" EntitySet="Botellas" />
+            <End Role="Bodega" EntitySet="Bodegas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Botella_Vino" Association="Self.FK_Botella_Vino">
+            <End Role="Vino" EntitySet="Vinoes" />
+            <End Role="Botella" EntitySet="Botellas" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BodegaModelStoreContainer" CdmEntityContainer="BodegaEntities">
+          <EntitySetMapping Name="Bodegas">
+            <EntityTypeMapping TypeName="BodegaModel.Bodega">
+              <MappingFragment StoreEntitySet="Bodega">
+                <ScalarProperty Name="Unidades" ColumnName="Unidades" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NotificadoCaducidad" ColumnName="NotificadoCaducidad" />
+                <ScalarProperty Name="IdBotella" ColumnName="IdBotella" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Botellas">
+            <EntityTypeMapping TypeName="BodegaModel.Botella">
+              <MappingFragment StoreEntitySet="Botella">
+                <ScalarProperty Name="Disponible" ColumnName="Disponible" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Caducidad" ColumnName="Caducidad" />
+                <ScalarProperty Name="Añada" ColumnName="Añada" />
+                <ScalarProperty Name="IdVino" ColumnName="IdVino" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vinoes">
+            <EntityTypeMapping TypeName="BodegaModel.Vino">
+              <MappingFragment StoreEntitySet="Vino">
+                <ScalarProperty Name="Baja" ColumnName="Baja" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Denominacion" ColumnName="Denominacion" />
+                <ScalarProperty Name="Capacidad" ColumnName="Capacidad" />
+                <ScalarProperty Name="Variedad" ColumnName="Variedad" />
+                <ScalarProperty Name="Crianza" ColumnName="Crianza" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
