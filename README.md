@@ -8,7 +8,7 @@ La aplicación consta de;
 - una WebApi que gestiona la persistencia de los datos.
 - Entity Framework para el acceso a los datos.
 - Un proceso Batch para enviar las notificaciones de caducidad.
-- Una Web MVC para visualizar los datos y gestionarlos.
+- Una Web MVC que consume ela WebApi y visualiza y gestiona el inventario.
 - Un proyecto de pruebas unitarias para la capa de servicios.
 
 Así mismo se hace uso de Unity para la inyección de dependencia.
