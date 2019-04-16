@@ -15,7 +15,7 @@ Así mismo se hace uso de Unity para la inyección de dependencia.
 
 El consumo de la WebApi se hace desde el backend de la aplicación Web MVC, aunque actualmente es más habitual hacerlo desde el frontend con herramientas como angular y type script, aquí tan sólo se pretende hacer una muestra de usus de .NET.
 
-Entity Framework es DataBase First, por lo cual a continuación dejo un script para la creacion de la base de datos.
+Entity Framework es DataBase First, por lo cual a continuación dejo un script para la creacion de la base de datos, de nombre "Bodega".
 
 
 
